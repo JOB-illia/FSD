@@ -3,6 +3,7 @@ import type { TouchableOpacityProps } from 'react-native';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { borderRadius, Colors, Spaces } from '~/src/shared/themed';
 import { TThemeColors, ThemeColors } from '~/src/shared/themed/types';
+import { SpinnerMini } from '../loaders';
 
 type Props = TouchableOpacityProps & {
   children: ReactNode;
@@ -23,6 +24,7 @@ const Button: FC<PropsWithChildren<Props>> = ({
       activeOpacity={0.8}
       style={[classes.button, ...(isOutline ? [classes.outline] : [])]} // ...(isOutline ? [classes.outline] : [])
     >
+      <SpinnerMini />
       {children}
     </TouchableOpacity>
   );

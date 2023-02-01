@@ -1,16 +1,25 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { IApiViewerPayload } from '../api/types';
-import { apiViewerLogin } from '../api';
+import { viewerSlice } from './slice';
+import { apiViewerLogin } from '~/src/entities/viewer/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const viewer_login = createAsyncThunk(
-  'viewer/login',
-  async (payload: IApiViewerPayload, thunkAPI) => {
-    try {
-      const { data } = await apiViewerLogin(payload);
+const { viewerLoginPending, viewerLoginFulfilled, viewerLoginReject } = viewerSlice.actions;
 
-      return data;
-    } catch (e: unknown) {
-      return `${e}`;
-    }
-  },
-);
+export const viewerLogin = () => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(viewerLoginPending());
+
+    const { data } = await apiViewerLogin({ email: 'admin@admin.com', password: 'qwerty' });
+
+    console.log('da');
+
+    console.log(data.token);
+
+    await AsyncStorage.setItem('token', data.token);
+
+    dispatch(viewerLoginFulfilled(data.token));
+  } catch (e: unknown) {
+    console.log(e);
+    // @ts-ignore
+    return dispatch(viewerLoginReject(`Error: ${e}`));
+  }
+};

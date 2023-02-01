@@ -1,7 +1,8 @@
-import type { Action, ThunkAction } from "@reduxjs/toolkit";
+import type { Action, ThunkAction } from '@reduxjs/toolkit';
+import { store } from './store';
 
 declare global {
-  type RootState = ReturnType<typeof import("./index").store.getState>;
-  type AppDispatch = ReturnType<typeof import("./index").store.dispatch>;
+  type AppDispatch = typeof store.dispatch;
+  type RootState = ReturnType<typeof store.getState>;
   type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
 }
